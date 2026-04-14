@@ -5,12 +5,13 @@ import "time"
 type Provider string
 
 const (
-	ProviderCodex  Provider = "codex"
-	ProviderClaude Provider = "claude"
+	ProviderCodex    Provider = "codex"
+	ProviderClaude   Provider = "claude"
+	ProviderOpenCode Provider = "opencode"
 )
 
 func (p Provider) IsValid() bool {
-	return p == ProviderCodex || p == ProviderClaude
+	return p == ProviderCodex || p == ProviderClaude || p == ProviderOpenCode
 }
 
 type UsageEvent struct {

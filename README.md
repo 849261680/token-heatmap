@@ -1,6 +1,6 @@
 # gitoken
 
-Local CLI for collecting `Codex` and `Claude Code` token usage from native JSONL logs.
+Local CLI for collecting `Codex`, `Claude Code`, and `OpenCode` token usage from local data stores.
 
 ## Current scope
 
@@ -12,12 +12,16 @@ Local CLI for collecting `Codex` and `Claude Code` token usage from native JSONL
   - Reads `~/.config/claude/projects/**/*.jsonl`
   - Reads `~/.claude/projects/**/*.jsonl`
   - Supports `CLAUDE_CONFIG_DIR`
+- `OpenCode`
+  - Reads `~/.local/share/opencode/opencode.db`
+  - Supports `OPENCODE_DATA_DIR`
 
 ## Commands
 
 ```bash
 ./gitoken collect
 ./gitoken collect --provider codex
+./gitoken collect --provider opencode
 ./gitoken report today
 ./gitoken report daily --days 30
 ./gitoken generate heatmap
@@ -38,6 +42,10 @@ SQLite database path:
 - The collector follows the same core approach as `CodexBar` for `Codex` and `Claude`:
   - Codex: parse `turn_context` + `event_msg/token_count`
   - Claude: parse `assistant` rows with `message.usage`
+- `OpenCode` is collected from its local SQLite store:
+  - `message.data.modelID`
+  - `part.data.type == "step-finish"`
+  - `part.data.tokens`
 - Claude streaming chunks are deduped by `message.id + requestId`.
 - Changed files are re-parsed and replace their prior rows in SQLite.
 - Deleted log files are removed from the local ledger.

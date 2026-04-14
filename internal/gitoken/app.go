@@ -163,11 +163,13 @@ func runReportDaily(args []string) error {
 func parseProviders(value string) ([]model.Provider, error) {
 	switch value {
 	case "all":
-		return []model.Provider{model.ProviderCodex, model.ProviderClaude}, nil
+		return []model.Provider{model.ProviderCodex, model.ProviderClaude, model.ProviderOpenCode}, nil
 	case "codex":
 		return []model.Provider{model.ProviderCodex}, nil
 	case "claude":
 		return []model.Provider{model.ProviderClaude}, nil
+	case "opencode":
+		return []model.Provider{model.ProviderOpenCode}, nil
 	default:
 		return nil, fmt.Errorf("unsupported provider %q", value)
 	}
@@ -181,7 +183,7 @@ func usageText() string {
 	return `gitoken
 
 Usage:
-  gitoken collect [--provider all|codex|claude] [--db PATH]
+  gitoken collect [--provider all|codex|claude|opencode] [--db PATH]
   gitoken report today [--db PATH]
   gitoken report daily [--days N] [--db PATH]
   gitoken generate heatmap [--days N] [--output-dir DIR] [--db PATH]

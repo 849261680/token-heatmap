@@ -105,3 +105,18 @@ func claudeRoots() ([]string, error) {
 		filepath.Join(home, ".claude", "projects"),
 	}, nil
 }
+
+func opencodeDBPath() (string, error) {
+	home, err := userHomeDir()
+	if err != nil {
+		return "", err
+	}
+
+	if value := strings.TrimSpace(os.Getenv("OPENCODE_DATA_DIR")); value != "" {
+		return filepath.Join(value, "opencode.db"), nil
+	}
+	if value := strings.TrimSpace(os.Getenv("XDG_DATA_HOME")); value != "" {
+		return filepath.Join(value, "opencode", "opencode.db"), nil
+	}
+	return filepath.Join(home, ".local", "share", "opencode", "opencode.db"), nil
+}

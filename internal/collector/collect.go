@@ -30,6 +30,8 @@ func ScanAll(ctx context.Context, st *store.Store, providers []model.Provider) (
 			scanners = append(scanners, &CodexScanner{})
 		case model.ProviderClaude:
 			scanners = append(scanners, &ClaudeScanner{})
+		case model.ProviderOpenCode:
+			scanners = append(scanners, &OpenCodeScanner{})
 		default:
 			return nil, fmt.Errorf("unsupported provider %q", provider)
 		}
