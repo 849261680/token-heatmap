@@ -1,0 +1,7 @@
+example/
+
+# Local build output
+/gitoken
+
+# macOS
+.DS_Store
