@@ -25,6 +25,14 @@ func DefaultDBPath() (string, error) {
 	return filepath.Join(home, ".tokenheat", "tokenheat.db"), nil
 }
 
+func legacyDBPath() (string, error) {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "", fmt.Errorf("resolve home dir: %w", err)
+	}
+	return filepath.Join(home, ".gitoken", "gitoken.db"), nil
+}
+
 func Open(path string) (*Store, error) {
 	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
 		return nil, fmt.Errorf("create db directory: %w", err)
@@ -38,6 +46,10 @@ func Open(path string) (*Store, error) {
 
 	store := &Store{db: db}
 	if err := store.migrate(context.Background()); err != nil {
+		_ = db.Close()
+		return nil, err
+	}
+	if err := store.migrateLegacyData(context.Background(), path); err != nil {
 		_ = db.Close()
 		return nil, err
 	}
@@ -82,6 +94,86 @@ func (s *Store) migrate(ctx context.Context) error {
 		}
 	}
 	return nil
+}
+
+func (s *Store) migrateLegacyData(ctx context.Context, currentPath string) error {
+	legacyPath, err := legacyDBPath()
+	if err != nil {
+		return err
+	}
+	if currentPath == legacyPath {
+		return nil
+	}
+	if _, err := os.Stat(legacyPath); err != nil {
+		if os.IsNotExist(err) {
+			return nil
+		}
+		return fmt.Errorf("stat legacy db: %w", err)
+	}
+
+	currentCount, err := s.tableCount(ctx, "usage_events")
+	if err != nil {
+		return err
+	}
+	if currentCount > 0 {
+		return nil
+	}
+
+	var legacyCount int
+	row := s.db.QueryRowContext(ctx, `SELECT COUNT(*) FROM pragma_database_list WHERE name = 'legacy'`)
+	if err := row.Scan(&legacyCount); err != nil {
+		return fmt.Errorf("check attached legacy db: %w", err)
+	}
+	if legacyCount > 0 {
+		if _, err := s.db.ExecContext(ctx, `DETACH DATABASE legacy`); err != nil {
+			return fmt.Errorf("detach legacy db: %w", err)
+		}
+	}
+
+	if _, err := s.db.ExecContext(ctx, `ATTACH DATABASE ? AS legacy`, legacyPath); err != nil {
+		return fmt.Errorf("attach legacy db: %w", err)
+	}
+	defer s.db.ExecContext(ctx, `DETACH DATABASE legacy`)
+
+	row = s.db.QueryRowContext(ctx, `SELECT COUNT(*) FROM legacy.usage_events`)
+	if err := row.Scan(&legacyCount); err != nil {
+		return fmt.Errorf("count legacy usage events: %w", err)
+	}
+	if legacyCount == 0 {
+		return nil
+	}
+
+	tx, err := s.db.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("begin legacy migration tx: %w", err)
+	}
+	defer tx.Rollback()
+
+	if _, err := tx.ExecContext(ctx, `
+		INSERT INTO usage_events
+		SELECT * FROM legacy.usage_events
+	`); err != nil {
+		return fmt.Errorf("copy legacy usage events: %w", err)
+	}
+	if _, err := tx.ExecContext(ctx, `
+		INSERT INTO file_states
+		SELECT * FROM legacy.file_states
+	`); err != nil {
+		return fmt.Errorf("copy legacy file states: %w", err)
+	}
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("commit legacy migration: %w", err)
+	}
+	return nil
+}
+
+func (s *Store) tableCount(ctx context.Context, table string) (int, error) {
+	row := s.db.QueryRowContext(ctx, fmt.Sprintf(`SELECT COUNT(*) FROM %s`, table))
+	var count int
+	if err := row.Scan(&count); err != nil {
+		return 0, fmt.Errorf("count table %s: %w", table, err)
+	}
+	return count, nil
 }
 
 type FileState struct {
