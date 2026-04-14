@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -77,10 +78,14 @@ func generateArtifacts(opts generateOptions) error {
 }
 
 type syncOptions struct {
-	Generate generateOptions
-	RepoDir  string
-	Remote   string
-	Branch   string
+	Generate       generateOptions
+	RepoDir        string
+	Remote         string
+	Branch         string
+	ProfileRepoDir string
+	ProfileRemote  string
+	ProfileBranch  string
+	ProfileAsset   string
 }
 
 func runSync(args []string) error {
@@ -108,8 +113,10 @@ func runSyncGitHub(args []string) error {
 			OutputDir: "docs",
 			Now:       time.Now(),
 		},
-		RepoDir: ".",
-		Remote:  "origin",
+		RepoDir:       ".",
+		Remote:        "origin",
+		ProfileRemote: "origin",
+		ProfileAsset:  "heatmap.svg",
 	}
 
 	fs := newFlagSet("sync github")
@@ -119,6 +126,10 @@ func runSyncGitHub(args []string) error {
 	outputDir := fs.String("output-dir", opts.Generate.OutputDir, "output directory relative to repo-dir")
 	remote := fs.String("remote", opts.Remote, "git remote name")
 	branch := fs.String("branch", "", "branch to push (defaults to current branch)")
+	profileRepoDir := fs.String("profile-repo-dir", "", "optional GitHub profile repository directory")
+	profileRemote := fs.String("profile-remote", opts.ProfileRemote, "git remote for profile repo")
+	profileBranch := fs.String("profile-branch", "", "branch to push for profile repo (defaults to current branch)")
+	profileAsset := fs.String("profile-asset", opts.ProfileAsset, "heatmap asset path relative to profile repo")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
@@ -129,6 +140,10 @@ func runSyncGitHub(args []string) error {
 	opts.RepoDir = *repoDir
 	opts.Remote = *remote
 	opts.Branch = *branch
+	opts.ProfileRepoDir = *profileRepoDir
+	opts.ProfileRemote = *profileRemote
+	opts.ProfileBranch = *profileBranch
+	opts.ProfileAsset = *profileAsset
 	opts.Generate.DBPath = *dbPath
 	opts.Generate.Days = *days
 	opts.Generate.OutputDir = filepath.Join(opts.RepoDir, *outputDir)
@@ -168,18 +183,70 @@ func syncGitHub(opts syncOptions) error {
 	}
 	if !changed {
 		fmt.Println("no export changes to sync")
+	} else {
+		commitMessage := fmt.Sprintf("Update token usage for %s", opts.Generate.Now.In(time.Local).Format("2006-01-02"))
+		if err := gitRun(opts.RepoDir, "commit", "-m", commitMessage); err != nil {
+			return err
+		}
+		if err := gitRun(opts.RepoDir, "push", opts.Remote, branch); err != nil {
+			return err
+		}
+
+		fmt.Printf("synced %s to %s/%s\n", outputRel, opts.Remote, branch)
+	}
+
+	if opts.ProfileRepoDir != "" {
+		if err := syncProfileHeatmap(opts, filepath.Join(opts.Generate.OutputDir, "heatmap.svg")); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func syncProfileHeatmap(opts syncOptions, heatmapPath string) error {
+	branch := opts.ProfileBranch
+	if branch == "" {
+		current, err := gitOutput(opts.ProfileRepoDir, "branch", "--show-current")
+		if err != nil {
+			return err
+		}
+		branch = strings.TrimSpace(current)
+		if branch == "" {
+			return fmt.Errorf("could not determine current git branch for profile repo")
+		}
+	}
+
+	data, err := os.ReadFile(heatmapPath)
+	if err != nil {
+		return fmt.Errorf("read generated heatmap: %w", err)
+	}
+	profileAssetPath := filepath.Join(opts.ProfileRepoDir, opts.ProfileAsset)
+	if err := os.WriteFile(profileAssetPath, data, 0o644); err != nil {
+		return fmt.Errorf("write profile heatmap: %w", err)
+	}
+
+	if err := gitRun(opts.ProfileRepoDir, "add", opts.ProfileAsset); err != nil {
+		return err
+	}
+
+	changed, err := gitHasStagedChanges(opts.ProfileRepoDir)
+	if err != nil {
+		return err
+	}
+	if !changed {
+		fmt.Println("no profile heatmap changes to sync")
 		return nil
 	}
 
-	commitMessage := fmt.Sprintf("Update token usage for %s", opts.Generate.Now.In(time.Local).Format("2006-01-02"))
-	if err := gitRun(opts.RepoDir, "commit", "-m", commitMessage); err != nil {
+	commitMessage := fmt.Sprintf("Update profile heatmap for %s", opts.Generate.Now.In(time.Local).Format("2006-01-02"))
+	if err := gitRun(opts.ProfileRepoDir, "commit", "-m", commitMessage); err != nil {
 		return err
 	}
-	if err := gitRun(opts.RepoDir, "push", opts.Remote, branch); err != nil {
+	if err := gitRun(opts.ProfileRepoDir, "push", opts.ProfileRemote, branch); err != nil {
 		return err
 	}
 
-	fmt.Printf("synced %s to %s/%s\n", outputRel, opts.Remote, branch)
+	fmt.Printf("synced %s to %s/%s\n", opts.ProfileAsset, opts.ProfileRemote, branch)
 	return nil
 }
 

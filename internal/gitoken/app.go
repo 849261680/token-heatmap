@@ -185,5 +185,6 @@ Usage:
   gitoken report today [--db PATH]
   gitoken report daily [--days N] [--db PATH]
   gitoken generate heatmap [--days N] [--output-dir DIR] [--db PATH]
-  gitoken sync github [--days N] [--output-dir DIR] [--repo-dir DIR] [--db PATH]`
+  gitoken sync github [--days N] [--output-dir DIR] [--repo-dir DIR] [--db PATH]
+  gitoken sync github [--profile-repo-dir DIR]`
 }

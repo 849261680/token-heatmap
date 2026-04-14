@@ -22,6 +22,7 @@ Local CLI for collecting `Codex` and `Claude Code` token usage from native JSONL
 ./gitoken report daily --days 30
 ./gitoken generate heatmap
 ./gitoken sync github
+./gitoken sync github --profile-repo-dir ../849261680
 ```
 
 ## Storage
@@ -47,3 +48,4 @@ SQLite database path:
   - `docs/usage.json`
   - `docs/heatmap.svg`
 - `./gitoken sync github` regenerates those files, commits them, and pushes to the current Git remote.
+- `./gitoken sync github --profile-repo-dir ../849261680` also copies `docs/heatmap.svg` into the profile repo and pushes that update.
