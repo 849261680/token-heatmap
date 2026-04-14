@@ -23,6 +23,7 @@ Local CLI for collecting `Codex`, `Claude Code`, and `OpenCode` token usage from
 ./tokenheat collect --provider codex
 ./tokenheat collect --provider opencode
 ./tokenheat report today
+./tokenheat report today --json
 ./tokenheat report daily --days 30
 ./tokenheat generate heatmap
 ./tokenheat run daily --profile-repo-dir ../849261680
@@ -70,3 +71,11 @@ SQLite database path:
 - Default run time is local `00:05` every day.
 - The scheduled command is `tokenheat run daily`, so it performs `collect + sync`.
 - Logs are written to `~/.tokenheat/logs/`.
+
+## Menu Bar App
+
+- Swift source lives in `apps/macos/TokenHeatMenu`.
+- `./scripts/build-tokenheat-menu.sh` builds `dist/Token Heatmap.app`.
+- Building the menu bar app currently requires full Xcode on macOS.
+- The menu bar app shells out to the bundled `tokenheat` CLI.
+- It shows today's token totals, supports `Sync Now`, and can install/remove daily sync.

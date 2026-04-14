@@ -15,25 +15,25 @@ func (p Provider) IsValid() bool {
 }
 
 type UsageEvent struct {
-	ID               string
-	Provider         Provider
-	SourceFile       string
-	EventTime        time.Time
-	Day              string
-	Model            string
-	InputTokens      int
-	CacheReadTokens  int
-	CacheWriteTokens int
-	OutputTokens     int
-	TotalTokens      int
+	ID               string    `json:"id"`
+	Provider         Provider  `json:"provider"`
+	SourceFile       string    `json:"source_file"`
+	EventTime        time.Time `json:"event_time"`
+	Day              string    `json:"day"`
+	Model            string    `json:"model"`
+	InputTokens      int       `json:"input_tokens"`
+	CacheReadTokens  int       `json:"cache_read_tokens"`
+	CacheWriteTokens int       `json:"cache_write_tokens"`
+	OutputTokens     int       `json:"output_tokens"`
+	TotalTokens      int       `json:"total_tokens"`
 }
 
 type DailyUsageRow struct {
-	Day              string
-	Provider         Provider
-	InputTokens      int
-	CacheReadTokens  int
-	CacheWriteTokens int
-	OutputTokens     int
-	TotalTokens      int
+	Day              string   `json:"day"`
+	Provider         Provider `json:"provider"`
+	InputTokens      int      `json:"input_tokens"`
+	CacheReadTokens  int      `json:"cache_read_tokens"`
+	CacheWriteTokens int      `json:"cache_write_tokens"`
+	OutputTokens     int      `json:"output_tokens"`
+	TotalTokens      int      `json:"total_tokens"`
 }

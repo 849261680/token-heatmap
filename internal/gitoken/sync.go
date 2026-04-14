@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"gitoken/internal/exporter"
-	"gitoken/internal/store"
+	"github.com/849261680/token-heatmap/internal/exporter"
+	"github.com/849261680/token-heatmap/internal/store"
 )
 
 type generateOptions struct {

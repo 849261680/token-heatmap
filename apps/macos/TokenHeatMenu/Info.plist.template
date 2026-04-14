@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleDevelopmentRegion</key>
+  <string>en</string>
+  <key>CFBundleExecutable</key>
+  <string>TokenHeatMenu</string>
+  <key>CFBundleIdentifier</key>
+  <string>com.tokenheat.menu</string>
+  <key>CFBundleInfoDictionaryVersion</key>
+  <string>6.0</string>
+  <key>CFBundleName</key>
+  <string>Token Heatmap</string>
+  <key>CFBundlePackageType</key>
+  <string>APPL</string>
+  <key>CFBundleShortVersionString</key>
+  <string>1.0</string>
+  <key>CFBundleVersion</key>
+  <string>1</string>
+  <key>LSMinimumSystemVersion</key>
+  <string>13.0</string>
+  <key>LSUIElement</key>
+  <true/>
+  <key>NSPrincipalClass</key>
+  <string>NSApplication</string>
+  <key>TokenHeatCLIPath</key>
+  <string>__CLI_PATH__</string>
+  <key>TokenHeatRepoDir</key>
+  <string>__REPO_DIR__</string>
+  <key>TokenHeatProfileRepoDir</key>
+  <string>__PROFILE_REPO_DIR__</string>
+  <key>TokenHeatProjectURL</key>
+  <string>__PROJECT_URL__</string>
+  <key>TokenHeatProfileURL</key>
+  <string>__PROFILE_URL__</string>
+</dict>
+</plist>

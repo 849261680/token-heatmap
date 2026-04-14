@@ -8,9 +8,9 @@ import (
 	"os"
 	"time"
 
-	"gitoken/internal/collector"
-	"gitoken/internal/model"
-	"gitoken/internal/store"
+	"github.com/849261680/token-heatmap/internal/collector"
+	"github.com/849261680/token-heatmap/internal/model"
+	"github.com/849261680/token-heatmap/internal/store"
 )
 
 type collectResultView struct {
@@ -132,6 +132,7 @@ func runReportToday(args []string) error {
 		return err
 	}
 	dbPath := fs.String("db", dbPathDefault, "sqlite database path")
+	jsonOut := fs.Bool("json", false, "emit JSON")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
@@ -147,6 +148,9 @@ func runReportToday(args []string) error {
 	if err != nil {
 		return err
 	}
+	if *jsonOut {
+		return printDailyRowsJSON(rows, 1)
+	}
 	printDailyRows(rows)
 	return nil
 }
@@ -161,6 +165,7 @@ func runReportDaily(args []string) error {
 	}
 	dbPath := fs.String("db", dbPathDefault, "sqlite database path")
 	days := fs.Int("days", 30, "number of local days to show")
+	jsonOut := fs.Bool("json", false, "emit JSON")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
@@ -178,6 +183,9 @@ func runReportDaily(args []string) error {
 	rows, err := st.DailyUsageSince(context.Background(), since)
 	if err != nil {
 		return err
+	}
+	if *jsonOut {
+		return printDailyRowsJSON(rows, *days)
 	}
 	printDailyRows(rows)
 	return nil

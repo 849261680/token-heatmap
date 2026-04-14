@@ -1,11 +1,14 @@
 package gitoken
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 	"sort"
 	"strings"
+	"time"
 
-	"gitoken/internal/model"
+	"github.com/849261680/token-heatmap/internal/model"
 )
 
 func printCollectResults(results []collectResultView) {
@@ -26,12 +29,7 @@ func printDailyRows(rows []model.DailyUsageRow) {
 		return
 	}
 
-	sort.Slice(rows, func(i, j int) bool {
-		if rows[i].Day != rows[j].Day {
-			return rows[i].Day < rows[j].Day
-		}
-		return rows[i].Provider < rows[j].Provider
-	})
+	sortDailyRows(rows)
 
 	fmt.Printf("%-12s %-8s %12s %12s %12s %12s %12s\n", "DAY", "PROVIDER", "INPUT", "CACHE_RD", "CACHE_WR", "OUTPUT", "TOTAL")
 	for _, row := range rows {
@@ -46,4 +44,30 @@ func printDailyRows(rows []model.DailyUsageRow) {
 			row.TotalTokens,
 		)
 	}
+}
+
+func printDailyRowsJSON(rows []model.DailyUsageRow, days int) error {
+	sortDailyRows(rows)
+	payload := struct {
+		GeneratedAt string                `json:"generated_at"`
+		Days        int                   `json:"days"`
+		Rows        []model.DailyUsageRow `json:"rows"`
+	}{
+		GeneratedAt: time.Now().Format(time.RFC3339),
+		Days:        days,
+		Rows:        rows,
+	}
+
+	encoder := json.NewEncoder(os.Stdout)
+	encoder.SetIndent("", "  ")
+	return encoder.Encode(payload)
+}
+
+func sortDailyRows(rows []model.DailyUsageRow) {
+	sort.Slice(rows, func(i, j int) bool {
+		if rows[i].Day != rows[j].Day {
+			return rows[i].Day < rows[j].Day
+		}
+		return rows[i].Provider < rows[j].Provider
+	})
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"gitoken/internal/gitoken"
+	"github.com/849261680/token-heatmap/internal/gitoken"
 )
 
 func main() {

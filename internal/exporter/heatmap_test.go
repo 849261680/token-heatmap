@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"gitoken/internal/model"
+	"github.com/849261680/token-heatmap/internal/model"
 )
 
 func TestBuildDailySummariesFillsMissingDays(t *testing.T) {

@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"gitoken/internal/store"
+	"github.com/849261680/token-heatmap/internal/store"
 )
 
 func newFlagSet(name string) *flag.FlagSet {

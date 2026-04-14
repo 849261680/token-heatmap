@@ -8,8 +8,8 @@ import (
 	"os"
 	"time"
 
-	"gitoken/internal/model"
-	"gitoken/internal/store"
+	"github.com/849261680/token-heatmap/internal/model"
+	"github.com/849261680/token-heatmap/internal/store"
 )
 
 type ClaudeScanner struct{}

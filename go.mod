@@ -1,4 +1,4 @@
-module gitoken
+module github.com/849261680/token-heatmap
 
 go 1.25.0
 

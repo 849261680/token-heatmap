@@ -10,7 +10,7 @@ import (
 
 	_ "modernc.org/sqlite"
 
-	"gitoken/internal/model"
+	"github.com/849261680/token-heatmap/internal/model"
 )
 
 type Store struct {

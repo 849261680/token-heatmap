@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"gitoken/internal/model"
-	"gitoken/internal/store"
+	"github.com/849261680/token-heatmap/internal/model"
+	"github.com/849261680/token-heatmap/internal/store"
 )
 
 const launchAgentLabel = "com.tokenheat.daily-sync"
