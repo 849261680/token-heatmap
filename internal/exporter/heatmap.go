@@ -84,11 +84,12 @@ func WriteHeatmapSVG(path string, summaries []DailySummary, title string) error 
 
 func buildHeatmapSVG(summaries []DailySummary, title string) string {
 	const (
-		cell   = 12
-		gap    = 3
-		left   = 46
-		top    = 38
-		footer = 42
+		cell         = 12
+		gap          = 3
+		left         = 46
+		headerHeight = 62
+		gridTop      = 58
+		footer       = 42
 	)
 
 	if len(summaries) == 0 {
@@ -111,7 +112,7 @@ func buildHeatmapSVG(summaries []DailySummary, title string) string {
 	weeks := int(end.Sub(start).Hours()/24)/7 + 1
 
 	width := left + weeks*(cell+gap) + 24
-	height := top + 7*(cell+gap) + footer
+	height := headerHeight + 7*(cell+gap) + footer
 
 	var b strings.Builder
 	b.WriteString(fmt.Sprintf(`<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" fill="none">`, width, height, width, height))
@@ -121,8 +122,8 @@ func buildHeatmapSVG(summaries []DailySummary, title string) string {
 .sub{font:11px ui-sans-serif,system-ui,-apple-system,sans-serif;fill:#57606a}
 </style>`)
 	b.WriteString(`<rect width="100%" height="100%" rx="14" fill="#ffffff"/>`)
-	b.WriteString(fmt.Sprintf(`<text class="title" x="%d" y="22">%s</text>`, left, escapeXML(title)))
-	b.WriteString(fmt.Sprintf(`<text class="sub" x="%d" y="%d">Daily token usage</text>`, left, top-12))
+	b.WriteString(fmt.Sprintf(`<text class="title" x="%d" y="24">%s</text>`, left, escapeXML(title)))
+	b.WriteString(fmt.Sprintf(`<text class="sub" x="%d" y="42">Daily token usage</text>`, left))
 
 	weekdayLabels := []struct {
 		Label string
@@ -133,7 +134,7 @@ func buildHeatmapSVG(summaries []DailySummary, title string) string {
 		{"Fri", time.Friday},
 	}
 	for _, label := range weekdayLabels {
-		y := top + int(label.Day)*(cell+gap) + cell - 2
+		y := gridTop + int(label.Day)*(cell+gap) + cell - 2
 		b.WriteString(fmt.Sprintf(`<text class="label" x="8" y="%d">%s</text>`, y, label.Label))
 	}
 
@@ -144,7 +145,7 @@ func buildHeatmapSVG(summaries []DailySummary, title string) string {
 		if !monthSeen[monthKey] && weekStart.Day() <= 7 {
 			monthSeen[monthKey] = true
 			x := left + week*(cell+gap)
-			b.WriteString(fmt.Sprintf(`<text class="label" x="%d" y="%d">%s</text>`, x, top-20, weekStart.Format("Jan")))
+			b.WriteString(fmt.Sprintf(`<text class="label" x="%d" y="%d">%s</text>`, x, gridTop-12, weekStart.Format("Jan")))
 		}
 		for weekday := 0; weekday < 7; weekday++ {
 			current := weekStart.AddDate(0, 0, weekday)
@@ -155,7 +156,7 @@ func buildHeatmapSVG(summaries []DailySummary, title string) string {
 				tokens = summary.TotalTokens
 			}
 			x := left + week*(cell+gap)
-			y := top + weekday*(cell+gap)
+			y := gridTop + weekday*(cell+gap)
 			fill := heatColor(tokens, maxTokens)
 			b.WriteString(fmt.Sprintf(`<rect x="%d" y="%d" width="%d" height="%d" rx="2" fill="%s">`, x, y, cell, cell, fill))
 			tooltip := fmt.Sprintf("%s: %d tokens", dayKey, tokens)
