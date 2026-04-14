@@ -87,8 +87,8 @@ func buildHeatmapSVG(summaries []DailySummary, title string) string {
 		cell         = 12
 		gap          = 3
 		left         = 46
-		headerHeight = 62
-		gridTop      = 58
+		headerHeight = 40
+		gridTop      = 34
 		footer       = 42
 	)
 
@@ -118,12 +118,9 @@ func buildHeatmapSVG(summaries []DailySummary, title string) string {
 	b.WriteString(fmt.Sprintf(`<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" fill="none">`, width, height, width, height))
 	b.WriteString(`<style>
 .label{font:12px ui-sans-serif,system-ui,-apple-system,sans-serif;fill:#57606a}
-.title{font:600 15px ui-sans-serif,system-ui,-apple-system,sans-serif;fill:#24292f}
 .sub{font:11px ui-sans-serif,system-ui,-apple-system,sans-serif;fill:#57606a}
 </style>`)
 	b.WriteString(`<rect width="100%" height="100%" rx="14" fill="#ffffff"/>`)
-	b.WriteString(fmt.Sprintf(`<text class="title" x="%d" y="24">%s</text>`, left, escapeXML(title)))
-	b.WriteString(fmt.Sprintf(`<text class="sub" x="%d" y="42">Daily token usage</text>`, left))
 
 	weekdayLabels := []struct {
 		Label string
