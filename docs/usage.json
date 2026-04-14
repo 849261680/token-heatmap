@@ -1,8 +1,941 @@
 {
-  "generated_at": "2026-04-15T00:30:41+08:00",
+  "generated_at": "2026-04-15T00:30:51+08:00",
   "timezone": "Local",
-  "days": 180,
+  "days": 365,
   "rows": [
+    {
+      "day": "2025-04-16",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-04-17",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-04-18",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-04-19",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-04-20",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-04-21",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-04-22",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-04-23",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-04-24",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-04-25",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-04-26",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-04-27",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-04-28",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-04-29",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-04-30",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-01",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-02",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-03",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-04",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-05",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-06",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-07",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-08",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-09",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-10",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-11",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-12",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-13",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-14",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-15",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-16",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-17",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-18",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-19",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-20",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-21",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-22",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-23",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-24",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-25",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-26",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-27",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-28",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-29",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-30",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-05-31",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-01",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-02",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-03",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-04",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-05",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-06",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-07",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-08",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-09",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-10",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-11",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-12",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-13",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-14",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-15",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-16",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-17",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-18",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-19",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-20",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-21",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-22",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-23",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-24",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-25",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-26",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-27",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-28",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-29",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-06-30",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-01",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-02",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-03",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-04",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-05",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-06",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-07",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-08",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-09",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-10",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-11",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-12",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-13",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-14",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-15",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-16",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-17",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-18",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-19",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-20",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-21",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-22",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-23",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-24",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-25",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-26",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-27",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-28",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-29",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-30",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-07-31",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-01",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-02",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-03",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-04",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-05",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-06",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-07",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-08",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-09",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-10",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-11",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-12",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-13",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-14",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-15",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-16",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-17",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-18",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-19",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-20",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-21",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-22",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-23",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-24",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-25",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-26",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-27",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-28",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-29",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-30",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-08-31",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-01",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-02",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-03",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-04",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-05",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-06",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-07",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-08",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-09",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-10",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-11",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-12",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-13",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-14",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-15",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-16",
+      "total_tokens": 4953,
+      "providers": {
+        "codex": 4953
+      }
+    },
+    {
+      "day": "2025-09-17",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-18",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-19",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-20",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-21",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-22",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-23",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-24",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-25",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-26",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-27",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-28",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-29",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-09-30",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-10-01",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-10-02",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-10-03",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-10-04",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-10-05",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-10-06",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-10-07",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-10-08",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-10-09",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-10-10",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-10-11",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-10-12",
+      "total_tokens": 20273,
+      "providers": {
+        "codex": 20273
+      }
+    },
+    {
+      "day": "2025-10-13",
+      "total_tokens": 726265,
+      "providers": {
+        "codex": 726265
+      }
+    },
+    {
+      "day": "2025-10-14",
+      "total_tokens": 4607511,
+      "providers": {
+        "codex": 4607511
+      }
+    },
+    {
+      "day": "2025-10-15",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-10-16",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2025-10-17",
+      "total_tokens": 0,
+      "providers": {}
+    },
     {
       "day": "2025-10-18",
       "total_tokens": 0,
