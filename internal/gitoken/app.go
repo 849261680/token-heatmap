@@ -30,6 +30,10 @@ func Run(args []string) error {
 		return runCollect(args[1:])
 	case "report":
 		return runReport(args[1:])
+	case "generate":
+		return runGenerate(args[1:])
+	case "sync":
+		return runSync(args[1:])
 	case "help", "-h", "--help":
 		return usageError()
 	default:
@@ -179,5 +183,7 @@ func usageText() string {
 Usage:
   gitoken collect [--provider all|codex|claude] [--db PATH]
   gitoken report today [--db PATH]
-  gitoken report daily [--days N] [--db PATH]`
+  gitoken report daily [--days N] [--db PATH]
+  gitoken generate heatmap [--days N] [--output-dir DIR] [--db PATH]
+  gitoken sync github [--days N] [--output-dir DIR] [--repo-dir DIR] [--db PATH]`
 }

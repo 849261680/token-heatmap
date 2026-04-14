@@ -20,6 +20,8 @@ Local CLI for collecting `Codex` and `Claude Code` token usage from native JSONL
 ./gitoken collect --provider codex
 ./gitoken report today
 ./gitoken report daily --days 30
+./gitoken generate heatmap
+./gitoken sync github
 ```
 
 ## Storage
@@ -38,3 +40,10 @@ SQLite database path:
 - Claude streaming chunks are deduped by `message.id + requestId`.
 - Changed files are re-parsed and replace their prior rows in SQLite.
 - Deleted log files are removed from the local ledger.
+
+## Generated artifacts
+
+- `./gitoken generate heatmap` writes:
+  - `docs/usage.json`
+  - `docs/heatmap.svg`
+- `./gitoken sync github` regenerates those files, commits them, and pushes to the current Git remote.
