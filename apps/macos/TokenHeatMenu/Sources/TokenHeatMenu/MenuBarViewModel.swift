@@ -4,31 +4,33 @@ import SwiftUI
 
 @MainActor
 final class MenuBarViewModel: ObservableObject {
+
+    struct HeatmapDay {
+        let date: String
+        let tokens: Int
+        var level: Int {
+            switch tokens {
+            case 0:               return 0
+            case 1..<1_000_000:   return 1
+            case 1_000_000..<10_000_000:  return 2
+            case 10_000_000..<100_000_000: return 3
+            default:              return 4
+            }
+        }
+    }
+
     struct ProviderSummary: Identifiable {
         let id: String
         let name: String
         let totalTokens: Int
 
-        var tokensText: String {
-            compactTokenString(totalTokens)
-        }
-
-        var accentColor: Color {
-            switch id {
-            case "codex":
-                return Color(red: 0.12, green: 0.48, blue: 0.98)
-            case "claude":
-                return Color(red: 0.09, green: 0.67, blue: 0.56)
-            case "opencode":
-                return Color(red: 0.42, green: 0.39, blue: 0.95)
-            default:
-                return .accentColor
-            }
-        }
+        var tokensText: String { compactTokenString(totalTokens) }
     }
 
-    @Published private(set) var providerSummaries: [ProviderSummary] = []
-    @Published private(set) var totalTokens: Int = 0
+    @Published private(set) var todayTokens: Int = 0
+    @Published private(set) var weeklyTokens: Int = 0
+    @Published private(set) var primaryProvider: String = "—"
+    @Published private(set) var heatmapDays: [HeatmapDay] = []
     @Published private(set) var lastUpdated: Date?
     @Published private(set) var isRefreshing = false
     @Published private(set) var scheduleInstalled = false
@@ -39,32 +41,22 @@ final class MenuBarViewModel: ObservableObject {
     private var refreshTask: Task<Void, Never>?
 
     var menuTitle: String {
-        if totalTokens == 0 {
-            return "热图"
-        }
-        return "热图 \(compactTokenString(totalTokens))"
+        todayTokens == 0 ? "热图" : "热图 \(compactTokenString(todayTokens))"
     }
 
-    var totalSummary: String {
-        if totalTokens == 0 {
-            return "暂无数据"
-        }
-        return compactTokenString(totalTokens)
+    var todaySummary: String {
+        todayTokens == 0 ? "暂无数据" : compactTokenString(todayTokens)
+    }
+
+    var weeklySummary: String {
+        weeklyTokens == 0 ? "暂无数据" : compactTokenString(weeklyTokens)
     }
 
     var lastUpdatedSummary: String {
         guard let lastUpdated else { return "尚未刷新" }
-        let formatter = RelativeDateTimeFormatter()
-        formatter.locale = Locale(identifier: "zh_CN")
-        return formatter.localizedString(for: lastUpdated, relativeTo: Date())
-    }
-
-    var scheduleStatusText: String {
-        scheduleInstalled ? "已开启" : "未开启"
-    }
-
-    var scheduleDetailText: String {
-        "00:05 自动同步"
+        let f = RelativeDateTimeFormatter()
+        f.locale = Locale(identifier: "zh_CN")
+        return f.localizedString(for: lastUpdated, relativeTo: Date())
     }
 
     func start() {
@@ -87,21 +79,42 @@ final class MenuBarViewModel: ObservableObject {
         Task {
             do {
                 try await cli.collect()
-                async let report = cli.todayReport()
-                async let scheduleInstalled = cli.scheduleInstalled()
-                let (rows, schedule) = try await (report, scheduleInstalled)
+                async let todayRows   = cli.todayReport()
+                async let usageReport = cli.usageReport()
+                async let scheduled   = cli.scheduleInstalled()
 
-                providerSummaries = rows
-                    .map { row in
-                        ProviderSummary(
-                            id: row.provider,
-                            name: row.providerDisplayName,
-                            totalTokens: row.totalTokens
-                        )
+                let (rows, usage, sched) = try await (todayRows, usageReport, scheduled)
+
+                todayTokens = rows.reduce(0) { $0 + $1.totalTokens }
+
+                // primary provider (highest today)
+                primaryProvider = rows.max(by: { $0.totalTokens < $1.totalTokens })
+                    .map { $0.providerDisplayName } ?? "—"
+
+                // weekly total from usage.json (last 7 days)
+                let today = Calendar.current.startOfDay(for: Date())
+                let sevenDaysAgo = Calendar.current.date(byAdding: .day, value: -6, to: today)!
+                let fmt = DateFormatter()
+                fmt.dateFormat = "yyyy-MM-dd"
+                weeklyTokens = usage.rows
+                    .filter { row in
+                        guard let d = fmt.date(from: row.day) else { return false }
+                        return d >= sevenDaysAgo
                     }
-                    .sorted { $0.name < $1.name }
-                totalTokens = rows.reduce(0) { $0 + $1.totalTokens }
-                self.scheduleInstalled = schedule
+                    .reduce(0) { $0 + $1.totalTokens }
+
+                // heatmap: last 98 days (14 weeks × 7)
+                let ninetyEightDaysAgo = Calendar.current.date(byAdding: .day, value: -97, to: today)!
+                let usageMap = Dictionary(uniqueKeysWithValues: usage.rows.map { ($0.day, $0.totalTokens) })
+                var days: [HeatmapDay] = []
+                for offset in 0..<98 {
+                    let date = Calendar.current.date(byAdding: .day, value: offset, to: ninetyEightDaysAgo)!
+                    let key = fmt.string(from: date)
+                    days.append(HeatmapDay(date: key, tokens: usageMap[key] ?? 0))
+                }
+                heatmapDays = days
+
+                scheduleInstalled = sched
                 lastUpdated = Date()
             } catch {
                 lastError = error.localizedDescription
@@ -111,38 +124,19 @@ final class MenuBarViewModel: ObservableObject {
     }
 
     func syncNow() {
-        runAction {
-            try await self.cli.runDaily()
-        }
-    }
-
-    func installSchedule() {
-        runAction {
-            try await self.cli.installSchedule()
-        }
-    }
-
-    func removeSchedule() {
-        runAction {
-            try await self.cli.removeSchedule()
-        }
+        runAction { try await self.cli.runDaily() }
     }
 
     func setScheduleEnabled(_ enabled: Bool) {
         guard enabled != scheduleInstalled, !isRefreshing else { return }
-
         let previous = scheduleInstalled
         scheduleInstalled = enabled
         isRefreshing = true
         lastError = nil
-
         Task {
             do {
-                if enabled {
-                    try await self.cli.installSchedule()
-                } else {
-                    try await self.cli.removeSchedule()
-                }
+                if enabled { try await cli.installSchedule() }
+                else        { try await cli.removeSchedule() }
                 isRefreshing = false
                 refresh()
             } catch {
@@ -154,25 +148,19 @@ final class MenuBarViewModel: ObservableObject {
     }
 
     func openHeatmap() {
-        open(urlString: cli.profileURLString)
+        guard let s = cli.profileURLString, let url = URL(string: s) else { return }
+        NSWorkspace.shared.open(url)
     }
 
-    func quit() {
-        NSApplication.shared.terminate(nil)
-    }
+    func quit() { NSApplication.shared.terminate(nil) }
 
-    func share(for summary: ProviderSummary) -> Double {
-        guard totalTokens > 0 else { return 0 }
-        return Double(summary.totalTokens) / Double(totalTokens)
-    }
-
-    private func runAction(_ operation: @escaping () async throws -> Void) {
+    private func runAction(_ op: @escaping () async throws -> Void) {
         guard !isRefreshing else { return }
         isRefreshing = true
         lastError = nil
         Task {
             do {
-                try await operation()
+                try await op()
                 isRefreshing = false
                 refresh()
             } catch {
@@ -181,24 +169,12 @@ final class MenuBarViewModel: ObservableObject {
             }
         }
     }
-
-    private func open(urlString: String?) {
-        guard let urlString, let url = URL(string: urlString) else { return }
-        NSWorkspace.shared.open(url)
-    }
-
 }
 
 private func compactTokenString(_ value: Int) -> String {
-    let number = Double(value)
-    if number >= 1_000_000_000 {
-        return String(format: "%.1fB", number / 1_000_000_000)
-    }
-    if number >= 1_000_000 {
-        return String(format: "%.1fM", number / 1_000_000)
-    }
-    if number >= 1_000 {
-        return String(format: "%.1fK", number / 1_000)
-    }
+    let n = Double(value)
+    if n >= 1_000_000_000 { return String(format: "%.1fB", n / 1_000_000_000) }
+    if n >= 1_000_000     { return String(format: "%.1fM", n / 1_000_000) }
+    if n >= 1_000         { return String(format: "%.1fK", n / 1_000) }
     return "\(value)"
 }

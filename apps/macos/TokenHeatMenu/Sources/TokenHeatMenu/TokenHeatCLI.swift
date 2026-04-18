@@ -11,16 +11,27 @@ struct TodayReportRow: Decodable {
 
     var providerDisplayName: String {
         switch provider {
-        case "codex":
-            return "Codex"
-        case "claude":
-            return "Claude Code"
-        case "opencode":
-            return "OpenCode"
-        default:
-            return provider
+        case "codex":   return "Codex"
+        case "claude":  return "Claude Code"
+        case "opencode":return "OpenCode"
+        default:        return provider
         }
     }
+}
+
+struct UsageReport: Decodable {
+    struct Row: Decodable {
+        let day: String
+        let totalTokens: Int
+        let providers: [String: Int]
+
+        enum CodingKeys: String, CodingKey {
+            case day
+            case totalTokens = "total_tokens"
+            case providers
+        }
+    }
+    let rows: [Row]
 }
 
 enum TokenHeatCLIError: LocalizedError {
@@ -30,12 +41,9 @@ enum TokenHeatCLIError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .missingCLI(let path):
-            return "找不到 tokenheat CLI：\(path)"
-        case .commandFailed(let message):
-            return message
-        case .invalidResponse:
-            return "无法解析 tokenheat 的输出结果"
+        case .missingCLI(let path):   return "找不到 tokenheat CLI：\(path)"
+        case .commandFailed(let msg): return msg
+        case .invalidResponse:        return "无法解析 tokenheat 的输出结果"
         }
     }
 }
@@ -58,8 +66,8 @@ struct TokenHeatCLI {
         self.repoDir = bundle.object(forInfoDictionaryKey: "TokenHeatRepoDir") as? String
             ?? FileManager.default.currentDirectoryPath
         self.profileRepoDir = bundle.object(forInfoDictionaryKey: "TokenHeatProfileRepoDir") as? String
-        self.profileURLString = bundle.object(forInfoDictionaryKey: "TokenHeatProfileURL") as? String
-        self.projectURLString = bundle.object(forInfoDictionaryKey: "TokenHeatProjectURL") as? String
+        self.profileURLString  = bundle.object(forInfoDictionaryKey: "TokenHeatProfileURL") as? String
+        self.projectURLString  = bundle.object(forInfoDictionaryKey: "TokenHeatProjectURL") as? String
     }
 
     func collect() async throws {
@@ -77,19 +85,23 @@ struct TokenHeatCLI {
         return response.rows
     }
 
+    func usageReport() async throws -> UsageReport {
+        let url = URL(fileURLWithPath: repoDir)
+            .appendingPathComponent("docs")
+            .appendingPathComponent("usage.json")
+        let data = try Data(contentsOf: url)
+        return try JSONDecoder().decode(UsageReport.self, from: data)
+    }
+
     func runDaily() async throws {
         var args = ["run", "daily", "--repo-dir", repoDir]
-        if let profileRepoDir {
-            args += ["--profile-repo-dir", profileRepoDir]
-        }
+        if let profileRepoDir { args += ["--profile-repo-dir", profileRepoDir] }
         _ = try await run(arguments: args)
     }
 
     func installSchedule() async throws {
         var args = ["schedule", "install", "--repo-dir", repoDir, "--binary", cliPath]
-        if let profileRepoDir {
-            args += ["--profile-repo-dir", profileRepoDir]
-        }
+        if let profileRepoDir { args += ["--profile-repo-dir", profileRepoDir] }
         _ = try await run(arguments: args)
     }
 
@@ -106,7 +118,6 @@ struct TokenHeatCLI {
         guard FileManager.default.isExecutableFile(atPath: cliPath) else {
             throw TokenHeatCLIError.missingCLI(cliPath)
         }
-
         return try await withCheckedThrowingContinuation { continuation in
             let process = Process()
             process.executableURL = URL(fileURLWithPath: cliPath)
@@ -119,24 +130,17 @@ struct TokenHeatCLI {
             process.standardError = stderr
 
             process.terminationHandler = { process in
-                let outputData = stdout.fileHandleForReading.readDataToEndOfFile()
-                let errorData = stderr.fileHandleForReading.readDataToEndOfFile()
-                let output = String(decoding: outputData, as: UTF8.self)
-                let errorOutput = String(decoding: errorData, as: UTF8.self)
-
+                let out = String(decoding: stdout.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self)
+                let err = String(decoding: stderr.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self)
                 if process.terminationStatus == 0 {
-                    continuation.resume(returning: output)
+                    continuation.resume(returning: out)
                 } else {
-                    let message = errorOutput.isEmpty ? output : errorOutput
-                    continuation.resume(throwing: TokenHeatCLIError.commandFailed(message.trimmingCharacters(in: .whitespacesAndNewlines)))
+                    continuation.resume(throwing: TokenHeatCLIError.commandFailed(
+                        (err.isEmpty ? out : err).trimmingCharacters(in: .whitespacesAndNewlines)
+                    ))
                 }
             }
-
-            do {
-                try process.run()
-            } catch {
-                continuation.resume(throwing: error)
-            }
+            do { try process.run() } catch { continuation.resume(throwing: error) }
         }
     }
 }

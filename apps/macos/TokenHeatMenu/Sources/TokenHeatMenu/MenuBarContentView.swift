@@ -3,137 +3,115 @@ import SwiftUI
 struct MenuBarContentView: View {
     @EnvironmentObject private var viewModel: MenuBarViewModel
 
+    private let levelColors: [Color] = [
+        Color(red: 0.84, green: 0.87, blue: 0.90), // 0 empty
+        Color(red: 0.75, green: 0.85, blue: 0.93), // 1
+        Color(red: 0.52, green: 0.71, blue: 0.87), // 2
+        Color(red: 0.24, green: 0.51, blue: 0.76), // 3
+        Color(red: 0.05, green: 0.32, blue: 0.62), // 4 dark
+    ]
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            headerSection
+
+            // ── Header label
+            Text("TOKEN HEATMAP")
+                .font(.system(size: 15, weight: .medium))
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 16)
+                .padding(.top, 16)
+                .padding(.bottom, 14)
+
             Divider()
-            providerSection
+
+            // ── 今日用量
+            statRow(label: "今日用量", value: viewModel.todaySummary, valueSize: 20)
+
             Divider()
-            scheduleSection
+
+            // ── 本周合计
+            statRow(label: "本周合计", value: viewModel.weeklySummary, valueSize: 20)
+
             Divider()
-            actionSection
-        }
-        .frame(width: 332)
-        .background(Color(nsColor: .windowBackgroundColor))
-        .task {
-            viewModel.start()
-        }
-    }
 
-    private var headerSection: some View {
-        HStack(alignment: .top, spacing: 12) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("今日")
-                    .font(.system(size: 13, weight: .medium))
-                    .foregroundStyle(.secondary)
-                Text(viewModel.totalSummary)
-                    .font(.system(size: 24, weight: .semibold))
-                    .lineLimit(1)
-                Text("Tokens")
-                    .font(.system(size: 12))
-                    .foregroundStyle(.secondary)
-            }
+            // ── 来源
+            statRow(label: "来源", value: viewModel.primaryProvider, valueSize: 13, valueBold: false)
 
-            Spacer(minLength: 0)
+            // ── Heatmap
+            heatmapGrid
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.horizontal, 0)
+                .padding(.top, 16)
+                .padding(.bottom, 14)
 
-            if viewModel.isRefreshing {
-                ProgressView()
-                    .controlSize(.small)
-                    .padding(.top, 4)
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 14)
-    }
+            Divider()
 
-    private var providerSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            if viewModel.providerSummaries.isEmpty {
-                Text("今天暂无数据")
-                    .font(.system(size: 13))
-                    .foregroundStyle(.secondary)
-            } else {
-                ForEach(viewModel.providerSummaries) { summary in
-                    providerRow(summary)
+            // ── Footer
+            HStack(spacing: 4) {
+                Spacer()
+                if viewModel.isRefreshing {
+                    ProgressView().controlSize(.mini)
                 }
+                Text("上次采集：\(viewModel.lastUpdatedSummary)")
+                    .font(.system(size: 11))
+                    .foregroundStyle(.secondary)
+                Spacer()
             }
+            .padding(.vertical, 12)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 14)
-    }
-
-    private var scheduleSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Toggle(isOn: Binding(
+        .frame(width: 300)
+        .background(Color(nsColor: .windowBackgroundColor))
+        .task { viewModel.start() }
+        .contextMenu {
+            Button("刷新", action: viewModel.refresh)
+            Button("同步", action: viewModel.syncNow)
+            Divider()
+            Toggle("每日自动同步", isOn: Binding(
                 get: { viewModel.scheduleInstalled },
                 set: { viewModel.setScheduleEnabled($0) }
-            )) {
-                Text("每日同步")
-                    .font(.system(size: 13, weight: .medium))
-            }
-            .toggleStyle(.switch)
-            .disabled(viewModel.isRefreshing)
+            ))
+            Divider()
+            Button("查看热力图", action: viewModel.openHeatmap)
+            Button("退出", action: viewModel.quit)
+        }
+    }
 
-            if let error = viewModel.lastError {
-                Text(error)
-                    .font(.system(size: 12))
-                    .foregroundStyle(.red)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
+    // MARK: - Subviews
+
+    private func statRow(label: String, value: String, valueSize: CGFloat, valueBold: Bool = true) -> some View {
+        HStack(alignment: .center) {
+            Text(label)
+                .font(.system(size: 13))
+                .foregroundStyle(.primary)
+            Spacer()
+            Text(value)
+                .font(.system(size: valueSize, weight: valueBold ? .semibold : .regular))
+                .foregroundStyle(.primary)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 14)
     }
 
-    private var actionSection: some View {
-        VStack(spacing: 8) {
-            HStack(spacing: 8) {
-                actionButton("刷新", action: viewModel.refresh)
-                actionButton("同步", action: viewModel.syncNow)
-            }
+    private var heatmapGrid: some View {
+        let cols = 14, rows = 7
+        let days = viewModel.heatmapDays
 
-            HStack(spacing: 8) {
-                actionButton("热力图", action: viewModel.openHeatmap)
-                actionButton("退出", action: viewModel.quit)
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 14)
-    }
-
-    private func providerRow(_ summary: MenuBarViewModel.ProviderSummary) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 10) {
-                Text(summary.name)
-                    .font(.system(size: 13, weight: .medium))
-                Spacer(minLength: 0)
-                Text(summary.tokensText)
-                    .font(.system(size: 13))
-                    .foregroundStyle(.secondary)
-            }
-
-            GeometryReader { proxy in
-                let width = max(proxy.size.width * viewModel.share(for: summary), 6)
-                ZStack(alignment: .leading) {
-                    Capsule()
-                        .fill(Color(nsColor: .separatorColor).opacity(0.18))
-                    Capsule()
-                        .fill(summary.accentColor.opacity(0.9))
-                        .frame(width: width)
+        return VStack(spacing: 3) {
+            ForEach(0..<rows, id: \.self) { row in
+                HStack(spacing: 3) {
+                    ForEach(0..<cols, id: \.self) { col in
+                        let idx = col * rows + row
+                        let level = idx < days.count ? days[idx].level : 0
+                        RoundedRectangle(cornerRadius: 2)
+                            .fill(levelColors[min(level, 4)])
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 2)
+                                    .stroke(Color.black.opacity(0.05), lineWidth: 0.5)
+                            )
+                            .frame(width: 15, height: 15)
+                    }
                 }
             }
-            .frame(height: 5)
         }
-    }
-
-    private func actionButton(_ title: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Text(title)
-                .font(.system(size: 13, weight: .medium))
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
-        }
-        .buttonStyle(.bordered)
-        .controlSize(.regular)
     }
 }
