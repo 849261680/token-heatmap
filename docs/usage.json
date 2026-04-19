@@ -1,13 +1,8 @@
 {
-  "generated_at": "2026-04-19T00:05:01+08:00",
+  "generated_at": "2026-04-20T00:05:01+08:00",
   "timezone": "Local",
   "days": 365,
   "rows": [
-    {
-      "day": "2025-04-20",
-      "total_tokens": 0,
-      "providers": {}
-    },
     {
       "day": "2025-04-21",
       "total_tokens": 0,
@@ -1926,10 +1921,16 @@
     },
     {
       "day": "2026-04-19",
-      "total_tokens": 1938052,
+      "total_tokens": 310128047,
       "providers": {
-        "codex": 1938052
+        "claude": 87653218,
+        "codex": 222474829
       }
+    },
+    {
+      "day": "2026-04-20",
+      "total_tokens": 0,
+      "providers": {}
     }
   ]
 }
