@@ -96,14 +96,11 @@ func buildHeatmapSVG(summaries []DailySummary, title string) string {
 		return `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="120"></svg>`
 	}
 
-	maxTokens := 0
 	dayMap := make(map[string]DailySummary, len(summaries))
 	for _, summary := range summaries {
 		dayMap[summary.Day] = summary
-		if summary.TotalTokens > maxTokens {
-			maxTokens = summary.TotalTokens
-		}
 	}
+	thresholds := heatThresholds(summaries)
 
 	start, _ := time.ParseInLocation("2006-01-02", summaries[0].Day, time.Local)
 	end, _ := time.ParseInLocation("2006-01-02", summaries[len(summaries)-1].Day, time.Local)
@@ -154,7 +151,7 @@ func buildHeatmapSVG(summaries []DailySummary, title string) string {
 			}
 			x := left + week*(cell+gap)
 			y := gridTop + weekday*(cell+gap)
-			fill := heatColor(tokens, maxTokens)
+			fill := heatColor(tokens, thresholds)
 			b.WriteString(fmt.Sprintf(`<rect x="%d" y="%d" width="%d" height="%d" rx="2" fill="%s">`, x, y, cell, cell, fill))
 			tooltip := fmt.Sprintf("%s: %d tokens", dayKey, tokens)
 			b.WriteString(fmt.Sprintf(`<title>%s</title></rect>`, escapeXML(tooltip)))
@@ -180,17 +177,51 @@ func buildHeatmapSVG(summaries []DailySummary, title string) string {
 	return b.String()
 }
 
-func heatColor(value int, max int) string {
-	if value <= 0 || max <= 0 {
+// heatThresholds returns nonzero usage quartiles for heatmap color buckets.
+func heatThresholds(summaries []DailySummary) []int {
+	var values []int
+	for _, summary := range summaries {
+		if summary.TotalTokens > 0 {
+			values = append(values, summary.TotalTokens)
+		}
+	}
+	if len(values) == 0 {
+		return nil
+	}
+	sort.Ints(values)
+	return []int{
+		quartileThreshold(values, 1),
+		quartileThreshold(values, 2),
+		quartileThreshold(values, 3),
+	}
+}
+
+// quartileThreshold returns the nearest-rank quartile threshold.
+func quartileThreshold(sortedValues []int, quartile int) int {
+	index := (len(sortedValues)*quartile + 3) / 4
+	if index < 1 {
+		index = 1
+	}
+	if index > len(sortedValues) {
+		index = len(sortedValues)
+	}
+	return sortedValues[index-1]
+}
+
+// heatColor maps token usage into empty plus four nonzero color buckets.
+func heatColor(value int, thresholds []int) string {
+	if value <= 0 {
 		return "#ebedf0"
 	}
-	ratio := float64(value) / float64(max)
+	if len(thresholds) == 0 || thresholds[0] == thresholds[len(thresholds)-1] {
+		return "#08519c"
+	}
 	switch {
-	case ratio < 0.25:
+	case value <= thresholds[0]:
 		return "#c6dbef"
-	case ratio < 0.5:
+	case value <= thresholds[1]:
 		return "#6baed6"
-	case ratio < 0.75:
+	case value <= thresholds[2]:
 		return "#3182bd"
 	default:
 		return "#08519c"

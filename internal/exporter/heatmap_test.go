@@ -36,3 +36,21 @@ func TestBuildHeatmapSVGContainsRectangles(t *testing.T) {
 		t.Fatalf("expected svg rectangles, got %q", svg)
 	}
 }
+
+func TestHeatColorUsesUsageBucketsNotSingleMax(t *testing.T) {
+	t.Parallel()
+
+	thresholds := heatThresholds([]DailySummary{
+		{Day: "2026-04-01", TotalTokens: 100},
+		{Day: "2026-04-02", TotalTokens: 200},
+		{Day: "2026-04-03", TotalTokens: 300},
+		{Day: "2026-04-04", TotalTokens: 400},
+		{Day: "2026-04-05", TotalTokens: 100000},
+	})
+	if got := heatColor(400, thresholds); got != "#3182bd" {
+		t.Fatalf("expected high non-outlier usage to use upper bucket, got %s", got)
+	}
+	if got := heatColor(100000, thresholds); got != "#08519c" {
+		t.Fatalf("expected outlier usage to use darkest bucket, got %s", got)
+	}
+}
