@@ -170,8 +170,11 @@ func runScheduleInstall(args []string) error {
 		return fmt.Errorf("write launch agent plist: %w", err)
 	}
 
-	_ = exec.Command("launchctl", "unload", launchAgentPath()).Run()
-	if err := exec.Command("launchctl", "load", launchAgentPath()).Run(); err != nil {
+	_ = exec.Command("launchctl", "bootout", launchAgentDomain(), launchAgentPath()).Run()
+	if err := exec.Command("launchctl", "enable", launchAgentService()).Run(); err != nil {
+		return fmt.Errorf("enable launch agent: %w", err)
+	}
+	if err := exec.Command("launchctl", "bootstrap", launchAgentDomain(), launchAgentPath()).Run(); err != nil {
 		return fmt.Errorf("load launch agent: %w", err)
 	}
 
@@ -201,7 +204,7 @@ func runScheduleStatus(args []string) error {
 		return err
 	}
 
-	cmd := exec.Command("launchctl", "list", launchAgentLabel)
+	cmd := exec.Command("launchctl", "print", launchAgentService())
 	output, err := cmd.CombinedOutput()
 	loaded := err == nil
 	fmt.Printf("plist: %s\n", plistPath)
@@ -229,7 +232,7 @@ func runScheduleRemove(args []string) error {
 		return err
 	}
 
-	_ = exec.Command("launchctl", "unload", plistPath).Run()
+	_ = exec.Command("launchctl", "bootout", launchAgentDomain(), plistPath).Run()
 	if err := os.Remove(plistPath); err != nil {
 		return fmt.Errorf("remove launch agent plist: %w", err)
 	}
@@ -424,6 +427,16 @@ func buildLaunchAgentPlist(trigger scheduleTrigger, programArgs []string, workin
 func launchAgentPath() string {
 	home, _ := os.UserHomeDir()
 	return filepath.Join(home, "Library", "LaunchAgents", launchAgentLabel+".plist")
+}
+
+// launchAgentDomain returns the current user's GUI launchd domain.
+func launchAgentDomain() string {
+	return fmt.Sprintf("gui/%d", os.Getuid())
+}
+
+// launchAgentService returns the current user's launchd service identifier.
+func launchAgentService() string {
+	return launchAgentDomain() + "/" + launchAgentLabel
 }
 
 func scheduleLogDir() string {

@@ -195,6 +195,10 @@ func syncProfileHeatmap(opts syncOptions, heatmapPath string) error {
 		}
 	}
 
+	if err := gitRun(opts.ProfileRepoDir, "pull", "--rebase", opts.ProfileRemote, branch); err != nil {
+		return err
+	}
+
 	data, err := os.ReadFile(heatmapPath)
 	if err != nil {
 		return fmt.Errorf("read generated heatmap: %w", err)
