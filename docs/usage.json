@@ -1,13 +1,8 @@
 {
-  "generated_at": "2026-06-15T05:54:15+08:00",
+  "generated_at": "2026-06-16T05:54:24+08:00",
   "timezone": "Local",
   "days": 365,
   "rows": [
-    {
-      "day": "2025-06-16",
-      "total_tokens": 0,
-      "providers": {}
-    },
     {
       "day": "2025-06-17",
       "total_tokens": 0,
@@ -1795,26 +1790,24 @@
     },
     {
       "day": "2026-05-14",
-      "total_tokens": 385163642,
+      "total_tokens": 383018935,
       "providers": {
-        "claude": 2144707,
         "codex": 383018935
       }
     },
     {
       "day": "2026-05-15",
-      "total_tokens": 770376367,
+      "total_tokens": 764279619,
       "providers": {
-        "claude": 6096748,
         "codex": 759476112,
         "opencode": 4803507
       }
     },
     {
       "day": "2026-05-16",
-      "total_tokens": 255946393,
+      "total_tokens": 244871959,
       "providers": {
-        "claude": 14892510,
+        "claude": 3818076,
         "codex": 241053883
       }
     },
@@ -2047,8 +2040,18 @@
     },
     {
       "day": "2026-06-15",
-      "total_tokens": 0,
-      "providers": {}
+      "total_tokens": 21372250,
+      "providers": {
+        "codex": 21372250
+      }
+    },
+    {
+      "day": "2026-06-16",
+      "total_tokens": 153760271,
+      "providers": {
+        "claude": 254452,
+        "codex": 153505819
+      }
     }
   ]
 }
