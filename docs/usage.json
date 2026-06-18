@@ -1,13 +1,8 @@
 {
-  "generated_at": "2026-06-17T17:04:28+08:00",
+  "generated_at": "2026-06-18T17:09:17+08:00",
   "timezone": "Local",
   "days": 365,
   "rows": [
-    {
-      "day": "2025-06-18",
-      "total_tokens": 0,
-      "providers": {}
-    },
     {
       "day": "2025-06-19",
       "total_tokens": 0,
@@ -2049,9 +2044,16 @@
     },
     {
       "day": "2026-06-17",
-      "total_tokens": 71640305,
+      "total_tokens": 77384015,
       "providers": {
-        "codex": 71640305
+        "codex": 77384015
+      }
+    },
+    {
+      "day": "2026-06-18",
+      "total_tokens": 183880195,
+      "providers": {
+        "codex": 183880195
       }
     }
   ]
