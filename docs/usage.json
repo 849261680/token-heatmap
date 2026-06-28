@@ -1,13 +1,8 @@
 {
-  "generated_at": "2026-06-27T23:10:45+08:00",
+  "generated_at": "2026-06-28T23:10:59+08:00",
   "timezone": "Local",
   "days": 365,
   "rows": [
-    {
-      "day": "2025-06-28",
-      "total_tokens": 0,
-      "providers": {}
-    },
     {
       "day": "2025-06-29",
       "total_tokens": 0,
@@ -2068,6 +2063,11 @@
       "providers": {
         "codex": 224143479
       }
+    },
+    {
+      "day": "2026-06-28",
+      "total_tokens": 0,
+      "providers": {}
     }
   ]
 }
