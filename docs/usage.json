@@ -1,13 +1,8 @@
 {
-  "generated_at": "2026-07-05T02:25:19+08:00",
+  "generated_at": "2026-07-06T02:25:28+08:00",
   "timezone": "Local",
   "days": 365,
   "rows": [
-    {
-      "day": "2025-07-06",
-      "total_tokens": 0,
-      "providers": {}
-    },
     {
       "day": "2025-07-07",
       "total_tokens": 0,
@@ -2072,6 +2067,11 @@
     },
     {
       "day": "2026-07-05",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2026-07-06",
       "total_tokens": 0,
       "providers": {}
     }
