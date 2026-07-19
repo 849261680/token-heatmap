@@ -1,48 +1,8 @@
 {
-  "generated_at": "2026-07-11T06:48:46+08:00",
+  "generated_at": "2026-07-19T14:19:12+08:00",
   "timezone": "Local",
   "days": 365,
   "rows": [
-    {
-      "day": "2025-07-12",
-      "total_tokens": 0,
-      "providers": {}
-    },
-    {
-      "day": "2025-07-13",
-      "total_tokens": 0,
-      "providers": {}
-    },
-    {
-      "day": "2025-07-14",
-      "total_tokens": 0,
-      "providers": {}
-    },
-    {
-      "day": "2025-07-15",
-      "total_tokens": 0,
-      "providers": {}
-    },
-    {
-      "day": "2025-07-16",
-      "total_tokens": 0,
-      "providers": {}
-    },
-    {
-      "day": "2025-07-17",
-      "total_tokens": 0,
-      "providers": {}
-    },
-    {
-      "day": "2025-07-18",
-      "total_tokens": 0,
-      "providers": {}
-    },
-    {
-      "day": "2025-07-19",
-      "total_tokens": 0,
-      "providers": {}
-    },
     {
       "day": "2025-07-20",
       "total_tokens": 0,
@@ -2080,6 +2040,48 @@
       "providers": {
         "codex": 44875331
       }
+    },
+    {
+      "day": "2026-07-12",
+      "total_tokens": 1738104,
+      "providers": {
+        "codex": 1738104
+      }
+    },
+    {
+      "day": "2026-07-13",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2026-07-14",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2026-07-15",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2026-07-16",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2026-07-17",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2026-07-18",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2026-07-19",
+      "total_tokens": 0,
+      "providers": {}
     }
   ]
 }
