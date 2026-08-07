@@ -1,18 +1,8 @@
 {
-  "generated_at": "2026-08-05T09:15:22+08:00",
+  "generated_at": "2026-08-07T14:20:30+08:00",
   "timezone": "Local",
   "days": 365,
   "rows": [
-    {
-      "day": "2025-08-06",
-      "total_tokens": 0,
-      "providers": {}
-    },
-    {
-      "day": "2025-08-07",
-      "total_tokens": 0,
-      "providers": {}
-    },
     {
       "day": "2025-08-08",
       "total_tokens": 0,
@@ -2080,6 +2070,16 @@
     },
     {
       "day": "2026-08-05",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2026-08-06",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2026-08-07",
       "total_tokens": 0,
       "providers": {}
     }
