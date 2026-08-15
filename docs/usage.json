@@ -1,13 +1,8 @@
 {
-  "generated_at": "2026-08-14T05:09:51+08:00",
+  "generated_at": "2026-08-15T17:49:19+08:00",
   "timezone": "Local",
   "days": 365,
   "rows": [
-    {
-      "day": "2025-08-15",
-      "total_tokens": 0,
-      "providers": {}
-    },
     {
       "day": "2025-08-16",
       "total_tokens": 0,
@@ -2080,6 +2075,11 @@
     },
     {
       "day": "2026-08-14",
+      "total_tokens": 0,
+      "providers": {}
+    },
+    {
+      "day": "2026-08-15",
       "total_tokens": 0,
       "providers": {}
     }
